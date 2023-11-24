@@ -1,10 +1,15 @@
 import { Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
-import { useState, useEffect } from 'react';
-import AddItemPopUp from './AddItemPopUp';
+import { useState } from 'react';
+import AddItemPopUp from './add-item/AddItemPopUp';
 
-const SideMenu = () => {
+interface SideMenuProps {
+  fetchItems: () => Promise<void>;
+}
+
+const SideMenu = (props: SideMenuProps) => {
+  const { fetchItems } = props;
   const [open, setOpen] = useState(false);
 
   const addItemPopUpOpen = () => {
@@ -15,7 +20,7 @@ const SideMenu = () => {
     setOpen(false);
   };
 
-  const addItemPopUpProps = { addItemPopUpClose, open };
+  const addItemPopUpProps = { addItemPopUpClose, open, fetchItems };
 
   return (
     <Box

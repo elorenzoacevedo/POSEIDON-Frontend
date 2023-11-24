@@ -7,24 +7,25 @@ import { InventoryData, getAllItems } from '@/backend/database-operations';
 
 const Inventory = () => {
   const [items, setItems] = useState<Array<InventoryData>>([]);
+  const fetchItems = async () => {
+    try {
+      const data = await getAllItems();
+      setItems(data);
+    } catch (error) {
+      console.error('Error fetching items:', error);
+    }
+  };
+  const sideMenuProps = { fetchItems };
 
-  const getItems = useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllItems();
-        setItems(data);
-      } catch (error) {
-        console.error('Error fetching items:', error);
-      }
-    };
-    fetchData();
+  useEffect(() => {
+    fetchItems();
   }, []);
 
   return (
     <Box>
       <Box sx={{ backgroundColor: '#A2E3FF', width: '100%', height: '2rem' }} />
       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <SideMenu />
+        <SideMenu {...sideMenuProps}/>
         <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <HeaderBar />
           <DynamicTable items={items} />

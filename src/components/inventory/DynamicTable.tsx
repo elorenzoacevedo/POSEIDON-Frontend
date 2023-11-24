@@ -1,4 +1,4 @@
-import { InventoryData, InventoryDataResponse } from '@/backend/database-operations';
+import { InventoryData } from '@/backend/database-operations';
 import { Box } from '@mui/material';
 import {
   DataGrid,
@@ -6,7 +6,6 @@ import {
   GridColumnHeaderParams,
   GridValueFormatterParams,
 } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
 
 export interface DynamicTableProps {
   items: Array<InventoryData>
@@ -52,7 +51,7 @@ const columns: GridColDef[] = [
     },
   },
   {
-    field: 'serial_number',
+    field: 'serialNumber',
     width: 250,
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>Serial Number</strong>
