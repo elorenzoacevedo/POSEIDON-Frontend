@@ -7,7 +7,7 @@ export interface FormValues {
   category: string;
   quantity: number;
   price: number;
-  serialNumber: string;
+  serialNumber?: string;
 }
 
 interface FormErrors {
@@ -101,6 +101,8 @@ const AddItemForm = (props: AddItemFormProps) => {
             <MenuItem value='Food & Drink'>Food & Drink</MenuItem>
             <MenuItem value='Hygiene'>Hygiene</MenuItem>
             <MenuItem value='Cleaning Supplies'>Cleaning Supplies</MenuItem>
+            <MenuItem value='Decoration'>Decoration</MenuItem>
+            <MenuItem value='Appliances'>Appliances</MenuItem>
           </TextField>
         </Grid>
         <Grid item>

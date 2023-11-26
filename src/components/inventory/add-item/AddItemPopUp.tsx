@@ -6,13 +6,13 @@ import { addItem } from '@/backend/database-operations';
 
 interface AddItemPopUpProps {
   addItemPopUpClose: () => void;
-  open: boolean;
+  addItemOpen: boolean;
   fetchItems: () => Promise<void>;
 }
 
 const AddItemPopUp = (props: AddItemPopUpProps) => {
-  const { addItemPopUpClose, open, fetchItems } = props;
-  const [itemBarcode, setBarcode] = useState('');
+  const { addItemPopUpClose, addItemOpen, fetchItems } = props;
+  const [addItemBarcode, setAddItemBarcode] = useState('');
   const [showTextFields, setShowTextFields] = useState(false);
   const [formValues, setFormValues] = useState({
     barcode: '',
@@ -46,7 +46,7 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
       price: 0,
       serialNumber: '',
     });
-    setBarcode('');
+    setAddItemBarcode('');
   };
 
   const resetFormErrors = () => {
@@ -55,25 +55,25 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!open) {
+      if (!addItemOpen) {
         return;
       }
 
       const key = event.key;
       if (!showTextFields && key.match(/^[a-zA-Z0-9]$/)) {
-        setBarcode(itemBarcode + key);
+        setAddItemBarcode(addItemBarcode + key);
       }
 
       if (key === 'Enter') {
         setShowTextFields(true);
-        setFormValues({ ...formValues, barcode: itemBarcode });
+        setFormValues({ ...formValues, barcode: addItemBarcode });
       }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, itemBarcode, showTextFields]);
+  }, [addItemOpen, addItemBarcode, showTextFields]);
 
   //TODO: avoid fetching all items when a new item is added.
   const sendData = async () => {
@@ -138,7 +138,7 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
 
   return (
     <Dialog
-      open={open}
+      open={addItemOpen}
       onClose={(event, reason) => {
         if (reason !== 'backdropClick') {
           addItemPopUpClose();
