@@ -122,3 +122,23 @@ export async function updateItem(
       return error;
     });
 }
+
+export async function deleteItem(
+  barcode: string
+): Promise<InventoryDataResponse> {
+  const apiPath = `http://localhost:8080/items/${barcode}`;
+
+  return fetch(apiPath, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      return error;
+    });
+}
