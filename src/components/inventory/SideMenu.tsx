@@ -1,12 +1,14 @@
 import { Box, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
-import UpdateIcon from '@mui/icons-material/Update';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useState } from 'react';
 import AddItemPopUp from './add-item/AddItemPopUp';
 import RestockItemPopUp from './restock-item/RestockItemPopUp';
 import { InventoryData } from '@/backend/database-operations';
 import UpdateItemPopUp from './update-item/UpdateItemPopUp';
+import DeleteItemPopUp from './delete-item/DeleteItemPopUp';
 
 interface SideMenuProps {
   fetchItems: () => Promise<void>;
@@ -18,6 +20,7 @@ const SideMenu = (props: SideMenuProps) => {
   const [addItemOpen, setAddItemOpen] = useState(false);
   const [restockItemOpen, setRestockItemOpen] = useState(false);
   const [updateItemOpen, setUpdateItemOpen] = useState(false);
+  const [deleteItemOpen, setDeleteItemOpen] = useState(false);
 
   const addItemPopUpOpen = () => {
     setAddItemOpen(true);
@@ -43,9 +46,18 @@ const SideMenu = (props: SideMenuProps) => {
     setUpdateItemOpen(false);
   };
 
+  const deleteItemPopUpOpen = () => {
+    setDeleteItemOpen(true);
+  };
+
+  const deleteItemPopUpClose = () => {
+    setDeleteItemOpen(false);
+  };
+
   const addItemPopUpProps = { addItemPopUpClose, addItemOpen, fetchItems };
   const restockItemPopUpProps = { restockItemPopUpClose, restockItemOpen, fetchItems };
   const updateItemPopUpProps = { updateItemPopUpClose, updateItemOpen, selectedItem, fetchItems };
+  const deleteItemPopUpProps = { deleteItemPopUpClose, deleteItemOpen, fetchItems, selectedItem };
 
   return (
     <Box
@@ -81,8 +93,8 @@ const SideMenu = (props: SideMenuProps) => {
           onClick={restockItemPopUpOpen}
         />
       </Tooltip>
-      <Tooltip title='Update item' placement='right'>
-        <UpdateIcon
+      <Tooltip title='Edit item' placement='right'>
+        <EditIcon
           sx={{
             fontSize: '3rem',
             cursor: 'pointer',
@@ -92,9 +104,21 @@ const SideMenu = (props: SideMenuProps) => {
           onClick={updateItemPopUpOpen}
         />
       </Tooltip>
+      <Tooltip title='Delete item' placement='right'>
+        <DeleteForeverIcon
+          sx={{
+            fontSize: '3rem',
+            cursor: 'pointer',
+            '&:hover': { backgroundColor: '#C4EDFF' },
+            marginBottom: '0.313rem',
+          }}
+          onClick={deleteItemPopUpOpen}
+        />
+      </Tooltip>
       <RestockItemPopUp {...restockItemPopUpProps}/>
       <AddItemPopUp {...addItemPopUpProps} />
       <UpdateItemPopUp {...updateItemPopUpProps}/>
+      <DeleteItemPopUp {...deleteItemPopUpProps}/>
     </Box>
   );
 };
