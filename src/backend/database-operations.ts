@@ -106,7 +106,10 @@ export async function searchItemByBarcode(
 export async function updateItem(
   item: InventoryData
 ): Promise<InventoryDataResponse> {
-  const apiPath = `http://localhost:8080/items/${item.barcode}`;
+  const apiPath =
+    item.category === 'Technology'
+      ? `http://localhost:8080/items/electronics/${item.barcode}`
+      : `http://localhost:8080/items/${item.barcode}`;
   return fetch(apiPath, {
     method: 'POST',
     headers: {
