@@ -1,7 +1,7 @@
 import { Box, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
-import UpdateIcon from '@mui/icons-material/Update';
+import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
 import AddItemPopUp from './add-item/AddItemPopUp';
 import RestockItemPopUp from './restock-item/RestockItemPopUp';
@@ -81,8 +81,8 @@ const SideMenu = (props: SideMenuProps) => {
           onClick={restockItemPopUpOpen}
         />
       </Tooltip>
-      <Tooltip title='Update item' placement='right'>
-        <UpdateIcon
+      <Tooltip title='Edit item' placement='right'>
+        <EditIcon
           sx={{
             fontSize: '3rem',
             cursor: 'pointer',

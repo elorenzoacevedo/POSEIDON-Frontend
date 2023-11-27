@@ -75,6 +75,15 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
     };
   }, [addItemOpen, addItemBarcode, showTextFields]);
 
+  const handleClose = () => {
+    addItemPopUpClose();
+    setTimeout(() => {
+      setShowTextFields(false);
+      resetFormErrors();
+      resetFormValues();
+    }, 300);
+  };
+
   //TODO: avoid fetching all items when a new item is added.
   const sendData = async () => {
     try {
@@ -123,7 +132,7 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
     }
 
     sendData();
-    addItemPopUpClose();
+    handleClose();
     resetFormErrors();
     resetFormValues();
   };
@@ -141,12 +150,7 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
       open={addItemOpen}
       onClose={(event, reason) => {
         if (reason !== 'backdropClick') {
-          addItemPopUpClose();
-          setTimeout(() => {
-            setShowTextFields(false);
-            resetFormErrors();
-            resetFormValues();
-          }, 300);
+          handleClose();
         }
       }}
     >

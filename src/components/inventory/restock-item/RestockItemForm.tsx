@@ -14,11 +14,19 @@ const RestockItemForm = (props: RestockItemFormProps) => {
   const { item, restockItemPopUpClose, hideRestockItemForm, fetchItems } =
     props;
   const [quantity, setQuantity] = useState(0);
+  const [formErrors, setFormErrors] = useState({
+    quantityError: '',
+  });
   const handleQuantityChange = (num: number) => {
     setQuantity(num);
   };
   const handleSubmit = async () => {
     if (!item) {
+      return;
+    }
+
+    if (quantity < 0) {
+      setFormErrors({ quantityError: 'Quantity cannot be negative' });
       return;
     }
 
@@ -33,7 +41,7 @@ const RestockItemForm = (props: RestockItemFormProps) => {
     };
     const response = await updateItem(newItem);
     if (response.status !== 200) {
-        console.error('Error restocking item:', response.message);
+      console.error('Error restocking item:', response.message);
     }
     fetchItems();
     restockItemPopUpClose();
@@ -52,6 +60,18 @@ const RestockItemForm = (props: RestockItemFormProps) => {
             defaultValue={0}
             inputProps={{ inputMode: 'numeric', min: 0 }}
             onChange={(e) => handleQuantityChange(parseInt(e.target.value, 10))}
+            onBlur={() => {
+              if (quantity < 0) {
+                setFormErrors({
+                  ...formErrors,
+                  quantityError: 'Quantity cannot be negative',
+                });
+                return;
+              }
+              setFormErrors({ quantityError: '' });
+            }}
+            error={formErrors.quantityError !== ''}
+            helperText={formErrors.quantityError}
           />
         </Grid>
         <Grid item>
