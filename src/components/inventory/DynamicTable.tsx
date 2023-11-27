@@ -8,7 +8,8 @@ import {
 } from '@mui/x-data-grid';
 
 export interface DynamicTableProps {
-  items: Array<InventoryData>
+  items: Array<InventoryData>;
+  setSelectedItem: React.Dispatch<React.SetStateAction<InventoryData | null>>;
 }
 
 const columns: GridColDef[] = [
@@ -64,17 +65,21 @@ function getRowBarcode(row: InventoryData): string {
 }
 
 const DynamicTable = (props: DynamicTableProps) => {
-  const { items } = props;
+  const { items, setSelectedItem } = props;
+  const handleRowClick = (params: any) => {
+    setSelectedItem(params.row as InventoryData);
+  };
 
   return (
     <Box sx={{ height: 'calc(100vh - 8.4rem)', width: '100%' }}>
       <DataGrid
-        disableColumnMenu
+        disableColumnSelector
         getRowId={getRowBarcode}
         rows={items}
         columns={columns}
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         pageSizeOptions={[10, 25, 50]}
+        onRowClick={handleRowClick}
       />
     </Box>
   );

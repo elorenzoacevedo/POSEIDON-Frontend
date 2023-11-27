@@ -7,6 +7,9 @@ import { InventoryData, getAllItems } from '@/backend/database-operations';
 
 const Inventory = () => {
   const [items, setItems] = useState<Array<InventoryData>>([]);
+  const [selectedItem, setSelectedItem] = useState<InventoryData | null>(null);
+  const headerBarProps = { setItems };
+  const dynamicTableProps = { items, setSelectedItem };
   const fetchItems = async () => {
     try {
       const data = await getAllItems();
@@ -15,7 +18,7 @@ const Inventory = () => {
       console.error('Error fetching items:', error);
     }
   };
-  const sideMenuProps = { fetchItems };
+  const sideMenuProps = { fetchItems, selectedItem };
 
   useEffect(() => {
     fetchItems();
@@ -25,10 +28,10 @@ const Inventory = () => {
     <Box>
       <Box sx={{ backgroundColor: '#A2E3FF', width: '100%', height: '2rem' }} />
       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <SideMenu {...sideMenuProps}/>
+        <SideMenu {...sideMenuProps} />
         <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-          <HeaderBar />
-          <DynamicTable items={items} />
+          <HeaderBar {...headerBarProps} />
+          <DynamicTable {...dynamicTableProps} />
         </Box>
       </Box>
     </Box>
