@@ -88,7 +88,9 @@ const UpdateItemForm = (props: UpdateItemFormProps) => {
         <TextField
           label='Quantity'
           type='number'
+          disabled={formValues.category === 'Technology'}
           defaultValue={formValues.quantity}
+          value={formValues.category === 'Technology' ? 1 : formValues.quantity}
           inputProps={{ inputMode: 'numeric', min: 0 }}
           onChange={(e) => handleTextFieldChange(e, 'quantity')}
         />
