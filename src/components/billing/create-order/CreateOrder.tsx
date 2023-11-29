@@ -1,4 +1,4 @@
-import { getItemByBarcode } from '@/backend/database-operations';
+import { decreaseItemQuantity, getItemByBarcode } from '@/backend/database-operations';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -72,9 +72,9 @@ const CreateOrder = () => {
             setItems(oldItems => [...oldItems, { ...item, quantity: 1 }]);
           }
         }
-        setBarcode(''); 
+        setBarcode('');
       } else {
-        setBarcode(barcode + event.key); 
+        setBarcode(barcode + event.key);
       }
     };
 
@@ -86,20 +86,30 @@ const CreateOrder = () => {
   }, [items, fetchItem, barcode]);
 
   const handlePaymentConfirm = async (method: string) => {
+    console.log('Handling payment confirm:', method);
     setPaymentMethod(method);
     setPaymentPopupOpen(false);
-
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const order = { purchases: items.map(item => ({ item, itemName: item.name, quantity: item.quantity })), paymentMethod: method, total };
-    const data = await saveOrder(order);
-    console.log(data);
-
-    setSavedOrderNumber(data.orderNumber);
-    setPrintInvoicePopupOpen(true);
-
-    setItems([]);
+    const order = {
+      purchases: items.map((item) => ({ item, itemName: item.name, quantity: item.quantity })),
+      paymentMethod: method,
+      total: total,
+    };
+    console.log('Order to save:', order);
+    const savedOrder = await saveOrder(order);
+    console.log('Saved order:', savedOrder);
+    if (savedOrder) {
+      setSavedOrderNumber(savedOrder.orderNumber);
+      setPrintInvoicePopupOpen(true);
+      for (const item of items) {
+        try {
+          await decreaseItemQuantity(item.barcode, item.quantity);
+        } catch (error) {
+          console.error(`Error decreasing quantity of item ${item.barcode}:`, error);
+        }
+      }
+      setItems([]);
+    }
   };
-
 
   const handlePrintInvoice = async () => {
     if (!savedOrderNumber) {

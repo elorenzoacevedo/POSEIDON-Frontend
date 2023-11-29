@@ -160,3 +160,26 @@ export async function getItemByBarcode(barcode: string): Promise<InventoryData |
     return null;
   }
 }
+
+export async function decreaseItemQuantity(barcode: string, quantity: number): Promise<void> {
+  try {
+    const item = await getItemByBarcode(barcode);
+    if (!item) {
+      console.error(`Item with barcode ${barcode} not found`);
+      return;
+    }
+
+    let newQuantity = item.quantity - quantity;
+    if (newQuantity < 0) {
+      newQuantity = 0;
+    }
+
+    const updatedItem = { ...item, quantity: newQuantity };
+    const updateResponse = await updateItem(updatedItem);
+    if (updateResponse.status !== 200) {
+      throw new Error(`HTTP error! status: ${updateResponse.status}`);
+    }
+  } catch (error) {
+    console.error('Error decreasing item quantity:', error);
+  }
+}
