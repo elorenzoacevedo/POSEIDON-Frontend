@@ -1,7 +1,7 @@
-import React from 'react';
+import CreateOrder from '../components/billing/create-order/CreateOrder';
 
 const Billing = () => {
-  return <h1>Billing Page</h1>;
+  return <CreateOrder />;
 };
 
 export default Billing;

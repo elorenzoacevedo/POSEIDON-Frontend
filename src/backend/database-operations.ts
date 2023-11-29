@@ -145,3 +145,18 @@ export async function deleteItem(
       return error;
     });
 }
+
+export async function getItemByBarcode(barcode: string): Promise<InventoryData | null> {
+  try {
+    const response = await fetch(`http://localhost:8080/items/${barcode}`);
+    const data = await response.json();
+    if (!!data && !!data.status && data.status === 200) {
+      return data.message != null ? data.message : null;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching item:', error);
+    return null;
+  }
+}
