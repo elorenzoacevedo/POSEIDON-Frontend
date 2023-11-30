@@ -110,7 +110,6 @@ const AddItemForm = (props: AddItemFormProps) => {
             label='Quantity'
             type='number'
             disabled={formValues.category === 'Technology'}
-            defaultValue={1}
             value={formValues.category === 'Technology' ? 1 : formValues.quantity}
             inputProps={{ inputMode: 'numeric', min: 0 }}
             onChange={(e) => handleTextFieldChange(e, 'quantity')}

@@ -183,3 +183,18 @@ export async function decreaseItemQuantity(barcode: string, quantity: number): P
     console.error('Error decreasing item quantity:', error);
   }
 }
+
+export async function generateBarcode(): Promise<string> {
+  try {
+    const response = await fetch('http://localhost:8080/items/generate-barcode/barcode');
+    const data = await response.json();
+    if (!!data && !!data.status && data.status === 200) {
+      return data.message != null ? data.message : [];
+    } else {
+      return "";
+    }
+  } catch (error) {
+    console.error('Error fetching items:', error);
+    return "";
+  }
+}

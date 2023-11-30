@@ -1,8 +1,15 @@
-import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Typography,
+  Button,
+} from '@mui/material';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import AddItemForm from './AddItemForm';
 import { addItem } from '@/backend/database-operations';
+import { generateBarcode } from '@/backend/database-operations';
 
 interface AddItemPopUpProps {
   addItemPopUpClose: () => void;
@@ -131,6 +138,9 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
       return;
     }
 
+    formValues.quantity =
+      formValues.category === 'Technology' ? 1 : formValues.quantity;
+
     sendData();
     handleClose();
     resetFormErrors();
@@ -161,7 +171,16 @@ const AddItemPopUp = (props: AddItemPopUpProps) => {
         ) : (
           <>
             <Typography>Scan the item barcode</Typography>
-            <Image src='/scan.gif' width={450} height={200} alt='barcode' />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Image src='/scan.gif' width={450} height={200} alt='barcode' />
+              <Button onClick={generateBarcode}>Generate Barcode</Button>
+            </div>
           </>
         )}
       </DialogContent>
